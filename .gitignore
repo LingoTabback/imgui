@@ -58,3 +58,10 @@ examples/example_sdl_sdlrenderer/example_sdl_sdlrenderer
 # Lingogine specific stuff
 bin
 bin-int
+
+# Files
+Makefile 
+
+# Visual Studio files and folder
+*.sln
+*.vcxproj*
