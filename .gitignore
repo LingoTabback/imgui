@@ -55,7 +55,7 @@ examples/example_sdl_opengl2/example_sdl_opengl2
 examples/example_sdl_opengl3/example_sdl_opengl3
 examples/example_sdl_sdlrenderer/example_sdl_sdlrenderer
 
-# Lingogine specific stuff
+# LinGo specific stuff
 bin
 bin-int
 
