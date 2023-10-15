@@ -22,6 +22,8 @@ project "ImGui"
 		"imgui_demo.cpp"
 	}
 
+	callingconvention ("FastCall")
+
 	filter "system:windows"
 		systemversion "latest"
 
