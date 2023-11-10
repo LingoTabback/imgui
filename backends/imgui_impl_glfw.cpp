@@ -391,8 +391,8 @@ void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int keycode, int scancode, i
 void ImGui_ImplGlfw_WindowFocusCallback(GLFWwindow* window, int focused)
 {
     ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
-    if (bd->PrevUserCallbackWindowFocus != nullptr && window == bd->Window)
-        bd->PrevUserCallbackWindowFocus(window, focused);
+    if (bd->PrevUserCallbackWindowFocus != nullptr /* && window == bd->Window*/) // changed this to allow LinGo apps to know when child windows are focused.
+        bd->PrevUserCallbackWindowFocus(bd->Window, window == bd->Window ? focused : (focused + 2));
 
     ImGuiIO& io = ImGui::GetIO();
     io.AddFocusEvent(focused != 0);
