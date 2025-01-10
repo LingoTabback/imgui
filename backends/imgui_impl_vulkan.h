@@ -58,6 +58,7 @@
 #else
 #include <vulkan/vulkan.h>
 #endif
+#include <mutex>
 #if defined(VK_VERSION_1_3) || defined(VK_KHR_dynamic_rendering)
 #define IMGUI_IMPL_VULKAN_HAS_DYNAMIC_RENDERING
 #endif
@@ -103,6 +104,8 @@ struct ImGui_ImplVulkan_InitInfo
     const VkAllocationCallbacks*    Allocator;
     void                            (*CheckVkResultFn)(VkResult err);
     VkDeviceSize                    MinAllocationSize;      // Minimum allocation size. Set to 1024*1024 to satisfy zealous best practices validation layer and waste a little memory.
+
+    std::mutex*                     QueueMutex;
 };
 
 // Follow "Getting Started" link and check examples/ folder to learn about using backends!

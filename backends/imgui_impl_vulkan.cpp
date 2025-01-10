@@ -843,7 +843,15 @@ bool ImGui_ImplVulkan_CreateFontsTexture()
     end_info.pCommandBuffers = &bd->TexCommandBuffer;
     err = vkEndCommandBuffer(bd->TexCommandBuffer);
     check_vk_result(err);
-    err = vkQueueSubmit(v->Queue, 1, &end_info, VK_NULL_HANDLE);
+    if (v->QueueMutex)
+    {
+        std::scoped_lock lock(*v->QueueMutex);
+        err = vkQueueSubmit(v->Queue, 1, &end_info, VK_NULL_HANDLE);
+    }
+    else
+    {
+        err = vkQueueSubmit(v->Queue, 1, &end_info, VK_NULL_HANDLE);
+    }
     check_vk_result(err);
 
     err = vkQueueWaitIdle(v->Queue);
@@ -1943,7 +1951,15 @@ static void ImGui_ImplVulkan_RenderWindow(ImGuiViewport* viewport, void*)
             check_vk_result(err);
             err = vkResetFences(v->Device, 1, &fd->Fence);
             check_vk_result(err);
-            err = vkQueueSubmit(v->Queue, 1, &info, fd->Fence);
+            if (v->QueueMutex)
+            {
+                std::scoped_lock lock(*v->QueueMutex);
+                err = vkQueueSubmit(v->Queue, 1, &info, fd->Fence);
+            }
+            else
+            {
+                err = vkQueueSubmit(v->Queue, 1, &info, fd->Fence);
+            }
             check_vk_result(err);
         }
     }
@@ -1970,7 +1986,15 @@ static void ImGui_ImplVulkan_SwapBuffers(ImGuiViewport* viewport, void*)
     info.swapchainCount = 1;
     info.pSwapchains = &wd->Swapchain;
     info.pImageIndices = &present_index;
-    err = vkQueuePresentKHR(v->Queue, &info);
+    if (v->QueueMutex)
+    {
+        std::scoped_lock lock(*v->QueueMutex);
+        err = vkQueuePresentKHR(v->Queue, &info);
+    }
+    else
+    {
+        err = vkQueuePresentKHR(v->Queue, &info);
+    }
     if (err == VK_ERROR_OUT_OF_DATE_KHR || err == VK_SUBOPTIMAL_KHR)
     {
         vd->SwapChainNeedRebuild = true;
